@@ -1,3 +1,1 @@
 # AndroidSample
-# AndroidSample
-# AndroidSample
