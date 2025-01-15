@@ -3,7 +3,6 @@ workflows:
     name: Build and Distribute APK
     max_build_duration: 60 # minutes
     environment:
-      flutter: stable # Use this if you're working with Flutter; remove if not
       android:
         sdk: latest
         api_level: 30 # Adjust API level as per your project
@@ -18,7 +17,7 @@ workflows:
       - name: Build APK
         script: |
           cd $CM_DIR
-          ./gradlew assembleRelease # Or "assembleDebug" if you need a debug APK
+          ./gradlew assembleDebug
 
       # Upload APK to Codemagic for direct distribution
       - name: Upload APK to Codemagic
