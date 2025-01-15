@@ -1,0 +1,41 @@
+workflows:
+  android:
+    name: Build and Distribute APK
+    max_build_duration: 60 # minutes
+    environment:
+      flutter: stable # Use this if you're working with Flutter; remove if not
+      android:
+        sdk: latest
+        api_level: 30 # Adjust API level as per your project
+    scripts:
+      # Install dependencies (for example, Gradle, etc.)
+      - name: Install dependencies
+        script: |
+          cd $CM_DIR
+          ./gradlew dependencies
+
+      # Build the APK file
+      - name: Build APK
+        script: |
+          cd $CM_DIR
+          ./gradlew assembleRelease # Or "assembleDebug" if you need a debug APK
+
+      # Upload APK to Codemagic for direct distribution
+      - name: Upload APK to Codemagic
+        script: |
+          # Assuming the APK is generated at app/build/outputs/apk/release/app-release.apk
+          cp app/build/outputs/apk/release/app-release.apk $CM_ARTIFACTS_DIR/
+          # The above command will copy the APK into the artifact directory
+          
+    artifacts:
+      - app/build/outputs/apk/release/app-release.apk
+
+    publish:
+      # You can share the APK link with your users here
+      # Codemagic will make it accessible to you and your users via a direct link
+      upload:
+        artifact: app/build/outputs/apk/release/app-release.apk
+        # Optional: You can provide a custom name for the artifact, if necessary
+        name: app-release.apk
+        description: APK ready for distribution
+        url: https://codemagic.io/artifacts/$CM_BUILD_ID/app-release.apk
