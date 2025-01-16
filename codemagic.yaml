@@ -1,23 +1,23 @@
 workflows:
-  android:
-    name: Build and Distribute APK
-    max_build_duration: 60
+  native-android:
+    name: Native Android
+    max_build_duration: 120
+    instance_type: mac_mini_m2
     environment:
       vars:
-        GRADLEW_PATH: "./gradlew"
-      android:
-        image: "codemagic/android:latest"
+        PACKAGE_NAME: "dev.yum.myapplication"
     scripts:
-      - name: Install dependencies
+      - name: Set Android SDK location
         script: |
-          chmod +x $GRADLEW_PATH
-          $GRADLEW_PATH dependencies
-      - name: Build APK
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > "$CM_BUILD_DIR/local.properties"
+      - name: Build Android release
         script: |
-          $GRADLEW_PATH assembleDebug
+          ./gradlew bundleRelease
     artifacts:
-      - build/app/outputs/apk/release/app-release.apk
+      - app/build/outputs/**/*.apk
     publishing:
       email:
         recipients:
-          - "rahulbolia91@gmail.com"
+          - rahulbolia91@gmail.com
+        notify:
+          success: true
