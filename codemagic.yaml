@@ -14,7 +14,7 @@ workflows:
         script: |
           ./gradlew bundleRelease
     artifacts:
-      - app/build/outputs/**/*.apk
+      - app/build/outputs/**/*.aab
     publishing:
       email:
         recipients:
